@@ -1,7 +1,3 @@
-/* Program sterowania łazikiem SPARTAN */
-/* Mikołaj Jędrzejczak                 */
-/* 20.10.2020                          */
-
 /* Biblioteki */
 #include <Arduino.h>
 #include <ESP8266WiFi.h>
@@ -9,32 +5,38 @@
 #include "pin.h"
 
 void setup() {
-  /* Inicjalizacja */
-  // Blynk - komunikacja telfon -> NodeMCU
-  Blynk.begin(auth, ssid, pass);
-  pinMode(PRZOD, 1);
-  digitalWrite(PRZOD, 0);
-
-  pinMode(TYL, 1);
-  digitalWrite(TYL, 0);
-
-  pinMode(PRAWO, 1);
-  digitalWrite(PRAWO, 0);
-
-  pinMode(LEWO, 1);
-  digitalWrite(LEWO, 0);
-
   // Wi-Fi
   WiFi.begin(SSID, PASS);
+  pinMode(LED, 1);
   while( WiFi.status() != WL_CONNECTED)
   {
-
+  digitalWrite(LED, 1);
+  delay(100);
+  digitalWrite(LED, 0);
+  delay(100);
   }
-  
+  digitalWrite(LED, 0);
 
- 
+  // Blynk - komunikacja telfon -> NodeMCU
+  /*
+  pinMode(PRZOD, 1);
+  digitalWrite(PRZOD, 0);
+  pinMode(TYL, 1);
+  digitalWrite(PRZOD, 0);
+  pinMode(LEWO, 1);
+  digitalWrite(PRZOD, 0);
+  pinMode(PRAWO, 1);
+  digitalWrite(PRZOD, 0);
+  pinMode(V, 1);
+  Blynk.begin(auth, ssid, pass);
+
+*/
 }
 
 void loop() {
-  Blynk.run();
+  //Blynk.run();
+  digitalWrite(LED, 1);
+  delay(1000);
+  digitalWrite(LED, 0);
+  delay(1000);
 }
