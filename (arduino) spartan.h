@@ -17,11 +17,12 @@
 #define SYGNAL_TYL 8
 #define SYGNAL_LEWO 12
 #define SYGNAL_PRAWO 13
-
+#define Sygnal_V A5
 
 /* Definicje funkcji */
 uint8_t STOP( void );
 uint8_t PRZOD( uint8_t moc );
 uint8_t TYL( uint8_t moc );
-uint8_t OBROT( uint8_t PK, uint8_t PPMW, uint8_t LK, uint8_t LPMW );
-uint16_t POMIAR( void );
+uint8_t OBROT_L( uint8_t moc );
+uint8_t OBROT_P( uint8_t moc );
+//uint16_t POMIAR( void );
