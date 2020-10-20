@@ -1,6 +1,6 @@
-/* Biblioteka definicji pinów */
-/* Mikołaj Jędrzejczak        */
-/* 20.10.2020                 */
+/* Redefinicja pinów nodeMCU */
+/* Mikołaj Jędrzejczak       */
+/* 20.10.2020                */
 
 /* Pliki nagłówkowe */
 #include <Arduino.h>
@@ -17,10 +17,12 @@
 #define D7 13
 #define D8 15
 
-#define PRZOD D4
+#define LED D4
+#define PRZOD D5
 #define TYL D3
 #define LEWO D2
 #define PRAWO D1
+#define V D8
 
 /* Wi-Fi */
 const char* SSID = "TOK-B8";
