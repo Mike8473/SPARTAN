@@ -7,7 +7,7 @@
 #include "pin.h"
 
 /* Zmienne */
-uint16_t przeszkoda;
+uint8_t moc;
 
 /* Główna funkcja */
 void setup() {
@@ -18,16 +18,22 @@ void setup() {
   pinMode(SP_K, 1);
   pinMode(SL_PMW, 1);
   pinMode(SP_PMW, 1);
-  // Przyciski
-  pinMode(PRZYCISK, 0);
-  digitalWrite(PRZYCISK, 1);
  
+ // Sygnały sterujące
   pinMode(SYGNAL_PRZ, 0);
+  pinMode(SYGNAL_TYL, 0);
+  pinMode(SYGNAL_LEWO, 0);
+  pinMode(SYGNAL_PRAWO, 0);
+  
 }
 
 /* Główna pętla */
 void loop() {
-  while(digitalRead(SYGNAL_PRZ) == 1) PRZOD(50);
+  moc = analogRead(A5);
+  while(digitalRead(SYGNAL_PRZ) == 1) PRZOD(moc);
+  while(digitalRead(SYGNAL_TYL) == 1) TYL(moc);
+  while(digitalRead(SYGNAL_LEWO) == 1) OBROT_L(moc);
+  while(digitalRead(SYGNAL_PRAWO) == 1) OBROT_P(moc);
   STOP();
   }
 
