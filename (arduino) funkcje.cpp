@@ -29,12 +29,20 @@ uint8_t TYL( uint8_t moc )
 
 }
 
-uint8_t OBROT( uint8_t PK, uint8_t PPMW, uint8_t LK, uint8_t LPMW )
+uint8_t OBROT_L( uint8_t moc )
 {
-    digitalWrite(SP_K, PK);
-    digitalWrite(SL_K, LK);
-    analogWrite(SP_PMW ,PPMW);
-    analogWrite(SL_PMW ,LPMW);
+    digitalWrite(SL_K, 0);
+    digitalWrite(SP_K, 1);
+    analogWrite(SL_PMW, moc);
+    analogWrite(SP_PMW, moc);
+}
+
+uint8_t OBROT_P( uint8_t moc )
+{
+    digitalWrite(SL_K, 1);
+    digitalWrite(SP_K, 0);
+    analogWrite(SL_PMW, moc);
+    analogWrite(SP_PMW, moc);
 }
 
 /*uint16_t POMIAR( void )
