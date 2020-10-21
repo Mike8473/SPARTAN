@@ -22,7 +22,7 @@
 #define TYL D3
 #define LEWO D2
 #define PRAWO D1
-#define V D8
+#define AUTO D8
 
 /* Wi-Fi */
 const char* SSID = "TOK-B8";
