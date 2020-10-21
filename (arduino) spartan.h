@@ -6,6 +6,7 @@
 #include <Arduino.h>
 
 /* Definicje */
+// Nakładka
 #define SL_K 4
 #define SL_PMW 5
 #define SP_K 9
@@ -17,7 +18,15 @@
 #define SYGNAL_TYL 8
 #define SYGNAL_LEWO 12
 #define SYGNAL_PRAWO 13
-#define Sygnal_V A5
+#define SYGNAL_AUTO A4
+//#define Sygnal_V A5
+
+// Pomiary
+#define TRIG_P 1
+#define ECHO_P 0
+#define TRIG_T A2
+#define ECHO_T A3
+
 
 /* Definicje funkcji */
 uint8_t STOP( void );
@@ -25,4 +34,6 @@ uint8_t PRZOD( uint8_t moc );
 uint8_t TYL( uint8_t moc );
 uint8_t OBROT_L( uint8_t moc );
 uint8_t OBROT_P( uint8_t moc );
-//uint16_t POMIAR( void );
+uint16_t POMIAR_P( void );
+uint16_t POMIAR_T( void );
+uint8_t OBLICZ( void );
