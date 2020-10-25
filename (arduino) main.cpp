@@ -4,15 +4,13 @@
 
 /* Biblioteki */
 #include <Arduino.h>
-#include "pin.h"
-
-uint16_t moc;
+#include "spartan.h"
 
 /* Główna funkcja */
 void setup() 
 {
-
   /* Inicjalizacja */
+  
   // UART - Do testów
   Serial.begin(9600);
   Serial.println(" ");
@@ -29,43 +27,52 @@ void setup()
   pinMode(SYGNAL_LEWO, 0);
   pinMode(SYGNAL_PRAWO, 0);
   pinMode(SYGNAL_AUTO, 0);
+  pinMode(SYGNAL_V, 0);
 
   // Czujniki
   pinMode(TRIG_P, 1);
   pinMode(TRIG_T, 1);
   pinMode(ECHO_P, 0);
-  pinMode(ECHO_P, 0);
+  pinMode(ECHO_T, 0);
   
 }
 
 /* Główna pętla */
 void loop() 
 {
+  uint8_t moc;
+  uint8_t kierunek = 1;
+
   while(digitalRead(SYGNAL_AUTO) == 1)
   {
-    Serial.print("POMIAR_1: ");
-    Serial.print(POMIAR_P());
-    Serial.println("");
-    Serial.print("POMIAR_2: ");
-    Serial.print(POMIAR_T());
+    if(kierunek == 1)
+    {
+      PRZOD(100);
+      if(POMIAR_P() <= 15)
+      {
+        STOP();
+        kierunek = CZUJNIKI(1);
+        delay(50);
+      }
+    }
 
-    OBROT_P(100);
-    delay(1000);
-    STOP();
+    if(kierunek == 0)
+    {
+      TYL(100);
+      if(POMIAR_T() <= 15)
+      {
+        STOP();
+       kierunek = CZUJNIKI(0);
+       delay(50);
+      }
+    }
 
-    Serial.println("");
-    Serial.print("POMIAR_1: ");
-    Serial.print(POMIAR_P());
-    Serial.println("");
-    Serial.print("POMIAR_2: ");
-    Serial.print(POMIAR_T());
-    Serial.println("");
+   delay(50);
 
-    while(digitalRead(SYGNAL_AUTO) == 1){}
   }
   while(digitalRead(SYGNAL_AUTO) == 0)
   {
-    moc = analogRead(A5);
+    moc = analogRead(SYGNAL_V);
     delay(50);
     Serial.println(moc);
     while(digitalRead(SYGNAL_PRZ) == 1) PRZOD(moc);
