@@ -3,11 +3,11 @@
 /* 19.10.2020                 */
 
 #include <Arduino.h>
-#include "pin.h"
+#include "spartan.h"
 
 /* Zmienne */
 
-uint8_t zwrot;
+uint16_t zwrot;
 uint16_t wynik_P1, wynik_T1, wynik_P2, wynik_T2;
 
 /* Funkcje */
@@ -79,7 +79,7 @@ uint16_t POMIAR_T( void )
   delayMicroseconds(2);
   digitalWrite(TRIG_T, 1);
   delayMicroseconds(10);
-  digitalWrite(TRIG_P, 0);
+  digitalWrite(TRIG_T, 0);
   digitalWrite(ECHO_T, 1);
 
  
@@ -91,38 +91,81 @@ uint16_t POMIAR_T( void )
   return dystans;
 }
 
-uint8_t OBLICZ( void )
+uint8_t CZUJNIKI( uint8_t kierunek )
 {
+    if(kierunek == 1) wynik_P1 = POMIAR_P();
+    else wynik_P1 = 0;
+    if(kierunek == 0 ) wynik_T1 = POMIAR_T();
+    else wynik_T1 = 0;
+    delay(50);
+
+    OBROT_P(100);
+    delay(425);
+    STOP();
+    delay(400);
+
+    wynik_P2 = POMIAR_P();
+    wynik_T2 = POMIAR_T();
+
+    Serial.println(" POMIAR X:");
+    Serial.println("Przód: ");
+    Serial.println(wynik_P1);
+    Serial.println("Tył: ");
+    Serial.println(wynik_T1);
+
+    Serial.println(" POMIAR Y:");
+    Serial.println("Przód: ");
+    Serial.println(wynik_P2);
+    Serial.println("Tył: ");
+    Serial.println(wynik_T2);
+
+    // Wybierz największy wynik
     if(wynik_P1 >= wynik_P2)
     {
         if(wynik_T1 >= wynik_T2)
         {
-            if(wynik_T1 >= wynik_P1) zwrot = 1;
-            if(wynik_T1 <= wynik_P1) zwrot = 2;
+            if(wynik_T1 >= wynik_P1) zwrot = wynik_T1;
+            if(wynik_T1 <= wynik_P1) zwrot = wynik_P1;
         }
         if(wynik_T1 <= wynik_T2)
         {
-            if(wynik_T2 >= wynik_P1) zwrot = 3;
-            if(wynik_T2 <= wynik_P1) zwrot = 4;
+            if(wynik_T2 >= wynik_P1) zwrot = wynik_T2;
+            if(wynik_T2 <= wynik_P1) zwrot = wynik_P1;
         }
     }
     if(wynik_P1 <= wynik_P2)
     {
         if(wynik_T1 >= wynik_T2)
         {
-            if(wynik_T1 >= wynik_P2) zwrot = 5;
-            if(wynik_T1 <= wynik_P2) zwrot = 6;
+            if(wynik_T1 >= wynik_P2) zwrot = wynik_T1;
+            if(wynik_T1 <= wynik_P2) zwrot = wynik_P2;
         }
-        if(wynik_T1 >= wynik_T2)
+        if(wynik_T1 <= wynik_T2)
         {
-            if(wynik_T2 >= wynik_P2) zwrot = 7;
-            if(wynik_T2 <= wynik_P2) zwrot = 8;
+            if(wynik_T2 >= wynik_P2) zwrot = wynik_T2;
+            if(wynik_T2 <= wynik_P2) zwrot = wynik_P2;
         }
     }
+    // Zapisz go w zmiennej [zwrot]
 
-    if(zwrot == 1 | zwrot == 2 | zwrot == 4 | zwrot == 5)
+    Serial.println(" Największa wartość: ");
+    Serial.println(zwrot);
+
+    // Odpowiednio się ustaw
+    if(zwrot == wynik_P1 || zwrot == wynik_T1)
     {
-        OBROT_P(100);
-    } 
+        OBROT_L(100);
+        delay(400);
+        STOP();
+        delay(250);
+
+    }
+
+    // Zwróć kierunek jazdy - Przód/Tył
+    if(zwrot == wynik_P1) return 1;
+    if(zwrot == wynik_T1) return 0;
+    if(zwrot == wynik_P2) return 1;
+    if(zwrot == wynik_T2) return 0;
+
 
 }
