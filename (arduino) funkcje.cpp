@@ -3,10 +3,13 @@
 /* 19.10.2020                 */
 
 #include <Arduino.h>
+#include <Adafruit_Sensor.h>
+#include <Adafruit_ADXL345_U.h>
 #include "spartan.h"
 
-/* Zmienne */
 
+
+/* Zmienne */
 uint16_t zwrot;
 uint16_t wynik_P1, wynik_T1, wynik_P2, wynik_T2;
 
@@ -168,4 +171,12 @@ uint8_t CZUJNIKI( uint8_t kierunek )
     if(zwrot == wynik_T2) return 0;
 
 
+}
+
+uint8_t DRGANIA( void )
+{
+    
+    
+
+  
 }
