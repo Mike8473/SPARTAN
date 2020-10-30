@@ -6,11 +6,14 @@
 #include <Arduino.h>
 #include "spartan.h"
 
+/* Zmienne globalne */
+uint8_t moc = 50;
+
 /* Główna funkcja */
 void setup() 
 {
   /* Inicjalizacja */
-  
+
   // UART - Do testów
   Serial.begin(9600);
   Serial.println(" ");
@@ -27,7 +30,8 @@ void setup()
   pinMode(SYGNAL_LEWO, 0);
   pinMode(SYGNAL_PRAWO, 0);
   pinMode(SYGNAL_AUTO, 0);
-  pinMode(SYGNAL_V, 0);
+  pinMode(SYGNAL_Vplus, 0);
+  pinMode(SYGNAL_Vminus, 0);
 
   // Czujniki
   pinMode(TRIG_P, 1);
@@ -40,7 +44,7 @@ void setup()
 /* Główna pętla */
 void loop() 
 {
-  uint8_t moc;
+
   uint8_t kierunek = 1;
 
   while(digitalRead(SYGNAL_AUTO) == 1)
@@ -65,21 +69,25 @@ void loop()
        kierunek = CZUJNIKI(0);
        delay(50);
       }
+      
     }
 
    delay(50);
-
   }
+
   while(digitalRead(SYGNAL_AUTO) == 0)
   {
-    moc = analogRead(SYGNAL_V);
-    delay(50);
+    if(digitalRead(SYGNAL_Vplus) == 1) moc = moc + 20;
+    while(digitalRead(SYGNAL_Vplus) == 1){}
+    if(digitalRead(SYGNAL_Vminus) == 1) moc = moc - 20;
+    while(digitalRead(SYGNAL_Vminus) == 1){}
     Serial.println(moc);
     while(digitalRead(SYGNAL_PRZ) == 1) PRZOD(moc);
     while(digitalRead(SYGNAL_TYL) == 1) TYL(moc);
     while(digitalRead(SYGNAL_LEWO) == 1) OBROT_L(moc);
     while(digitalRead(SYGNAL_PRAWO) == 1) OBROT_P(moc);
     STOP();
+    delay(50);
   }
 
 }
