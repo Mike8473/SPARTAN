@@ -4,6 +4,7 @@
 
 /* Pliki nagłówkowe */
 #include <Arduino.h>
+#include "Adafruit_MCP23008.h"
 
 /* Definicje */
 // Nakładka
@@ -19,7 +20,8 @@
 #define SYGNAL_LEWO 12
 #define SYGNAL_PRAWO 13
 #define SYGNAL_AUTO A4
-#define SYGNAL_V A5
+#define SYGNAL_Vplus A5
+#define SYGNAL_Vminus 11
 
 // Pomiary
 #define TRIG_T A1
@@ -36,3 +38,4 @@ uint8_t OBROT_P( uint8_t moc );
 uint16_t POMIAR_P( void );
 uint16_t POMIAR_T( void );
 uint8_t CZUJNIKI( uint8_t kierunek );
+uint8_t DRGANIA( void );
